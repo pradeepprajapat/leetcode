@@ -1,5 +1,7 @@
 package medium;
 
+import java.util.LinkedList;
+
 class BtNode {
     int val;
     BtNode left;
@@ -52,6 +54,20 @@ public class BST {
         root = deleteBtNode(root, v);
     }
 
+    private boolean containsKey(int k) {
+        BtNode tmp = root;
+        while (tmp != null) {
+            if (k > tmp.val) {
+                tmp = tmp.right;
+            } else if (k < tmp.val) {
+                tmp = tmp.left;
+            } else if (tmp.val == k) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private BtNode deleteBtNode(BtNode root, int v) {
         if (root == null) {
             return root;
@@ -79,16 +95,44 @@ public class BST {
         return root;
     }
 
+    private void levelOrderTraversal() {
+        if (root == null) {
+            return;
+        }
+        StringBuilder s = new StringBuilder();
+        LinkedList<BtNode> btNodes = new LinkedList<>();
+        btNodes.add(root);
+        while (!btNodes.isEmpty()) {
+            BtNode btNode = btNodes.remove();
+            if (btNode.left != null) {
+
+                btNodes.add(btNode.left);
+            }
+            if (btNode.right != null) {
+
+                btNodes.add(btNode.right);
+            }
+            s.append(btNode.val).append(",");
+        }
+        System.out.println("LEVEL order: " + s.toString());
+    }
+
     public static void main(String[] args) {
         BST bt = new BST();
-        bt.insert(10);
-        bt.insert(20);
-        bt.insert(30);
+        bt.insert(6);
+        bt.insert(4);
+        bt.insert(8);
+        bt.insert(3);
         bt.insert(5);
-        bt.insert(0);
-        bt.insert(15);
+        bt.insert(7);
+        bt.insert(9);
         bt.inOrder();
-        bt.delete(15);
+        bt.levelOrderTraversal();
+        bt.delete(5);
         bt.inOrder();
+        bt.levelOrderTraversal();
+        System.out.println(bt.containsKey(3));
+        System.out.println(bt.containsKey(5));
+        System.out.println(bt.containsKey(0));
     }
 }
